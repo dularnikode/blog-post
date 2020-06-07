@@ -1,48 +1,54 @@
-import React from 'react';
+import React,{Component} from 'react';
 import './App.css';
-
-function App() {
-  return (
-    <>
-    <h1>Hello this is Blog-post App</h1>
-    <div>
-      <h2>Layout</h2>
+import {connect} from 'react-redux';
+import * as actions from  './Store/Actions/index';
+import Layout from './components/Layout/Layout';
+import Login from './containers/Login/Login';
+import Posts from './containers/Posts/Posts';
+import Logout from './containers/Logout/Logout';
+import { Route,Switch,Redirect,withRouter} from 'react-router-dom';
+class App extends Component {
+  componentDidMount(){
+    this.props.onTryAutoSignup();
+  }
+  render(){
+    let routes=(
+      <Switch>
+        <Route path="/login" exact component={Login} />
+        <Route path="/"  exact component={Posts}/>
+        <Redirect to='/'/>
+      </Switch> 
+    );
+    if (this.props.isAuthenticated){
+      routes=(
+        <Switch>
+          <Route path="/posts" component={Posts} />
+          <Route path="/login" component={Login}/>
+          <Route path="/logout" component={Logout}/>
+          <Route path="/" exact component={Posts} />
+        </Switch>
+      );
+    }
+    return (
       <div>
-          <h2>Navigation</h2>
-          <p>Logo</p>
-          <p>Posts</p>
-          <p>Logout || Login</p>
+        <Layout>
+            {routes}
+        </Layout>
       </div>
-      <div>
-        <h2>Posts</h2>
-        <div>
-          <h3>Post Cards</h3>
-          <p>Title</p>
-          <p>Content</p>
-          <button>Edit</button>
-          <button>Delete</button>
-        </div>
-      </div>
-
-      <div>
-        <h2>create post</h2>
-        <p>Modal</p>
-        <p>Title</p>
-        <p>Content</p>
-        <button>Save</button>
-        <button>Cancel</button>
-      </div>
-
-      <div>
-        <h2>Login</h2>
-        <p>Input username</p>
-        <p>Input password</p>
-        <button>Login</button>
-      </div>
-    </div>
-    </>
-
   );
 }
+}
 
-export default App;
+const mapStateToProps=(state)=>{
+  return{
+    isAuthenticated:state.token !==null
+  };
+};
+const mapDispatchToProps= dispatch =>{
+  return {
+    onTryAutoSignup: () =>dispatch(actions.authCheckState())
+  };
+};
+
+
+export default withRouter(connect(mapStateToProps,mapDispatchToProps)(App));
