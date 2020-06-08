@@ -5,13 +5,13 @@ import classes from './Layout.module.css';
 import Navbar from '../../components/Navigation/Navbar/Navbar';
 //import {Container} from 'semantic-ui-react';
 
-import {connect} from 'react-redux';
+
 
 class Layout extends Component {
     render () {
         return (
             <>
-                <Navbar isLoggedIn={this.props.isAuthenticated}/>
+                <Navbar/>
                 {/*<SideDrawer/>*/}
                 <main className={classes.Content}>
                     {this.props.children}
@@ -20,10 +20,6 @@ class Layout extends Component {
         );
     }
 }
-const  mapStateToProps =state =>{
-    return {
-        isAuthenticated:state.token !==null
-    };
-};
 
-export default connect(mapStateToProps)(Layout);
+
+export default Layout;

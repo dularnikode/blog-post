@@ -64,7 +64,7 @@ class  Login extends Component{
 
         let authRedirect = null;
         if (this.props.isAuthenticated){
-        authRedirect=<Redirect to={this.props.authRedirectPath} />;
+        authRedirect=(<Redirect to='/'/>);
         }
 
         return (
@@ -90,7 +90,6 @@ class  Login extends Component{
                         type='password' required
                         onChange={this.inputChangedHandler}
                     />
-
                     {errorMessage}
                     <Button color='black' fluid size='large'>
                         Login
@@ -113,10 +112,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onAuth: ( email, password) => dispatch( actions.login( email, password) ),
+        onAuth: ( email, password) => dispatch( actions.login( email, password) )
     };
 };
-  
-
-
 export default connect(mapStateToProps,mapDispatchToProps)(Login);
