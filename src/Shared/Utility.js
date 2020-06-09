@@ -7,8 +7,6 @@ export const checkValidity =( value, rules )=>{
         if ( rules.required ) {
             isValid = value.trim() !== '' && isValid;
         }
-        
-        console.log(isValid);
 
         return isValid;
 }

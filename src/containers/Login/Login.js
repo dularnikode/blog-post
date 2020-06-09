@@ -4,7 +4,7 @@ import {Redirect} from 'react-router-dom';
 import {checkValidity} from '../../Shared/Utility';
 import * as actions from '../../Store/Actions/index';
 import {connect} from 'react-redux';
-
+import Spinner from '../../components/Spinner/Spinner';
 
 class  Login extends Component{
 
@@ -26,11 +26,11 @@ class  Login extends Component{
             }
         }
     }
+   
 
 
 
     inputChangedHandler=(event)=>{
-        console.log("inputChangedHandler");
         const updatedControls = {
             ...this.state.controls,
             [event.target.name]: {
@@ -43,7 +43,6 @@ class  Login extends Component{
     }
 
     onSubmitHandler=(event)=>{
-        console.log("onSubmitHandler");
         event.preventDefault();
         this.props.onAuth( this.state.controls.email.value, this.state.controls.password.value );
     }
@@ -54,7 +53,6 @@ class  Login extends Component{
         let errorMessage=null;
 
         if(this.props.error){
-            console.log(this.props.error.message);
             errorMessage=(
             <p style={{
                 color:'red'
@@ -64,17 +62,10 @@ class  Login extends Component{
 
         let authRedirect = null;
         if (this.props.isAuthenticated){
-        authRedirect=(<Redirect to='/'/>);
+            authRedirect=(<Redirect to='/'/>);
         }
-
-        return (
-            <Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
-                <Grid.Column style={{ maxWidth: 450 }}>
-                {authRedirect}
-                <Header as='h2' color='black' textAlign='center'>
-                    Login to your Blog
-                </Header>
-                <Form size='large' onSubmit={this.onSubmitHandler}>
+        let login=(
+            <Form size='large' onSubmit={this.onSubmitHandler}>
                     <Segment stacked>
                     <Form.Input 
                         fluid icon='user' iconPosition='left' 
@@ -96,6 +87,19 @@ class  Login extends Component{
                     </Button>
                     </Segment>
                 </Form>
+        );
+        if(this.props.isloading){
+            login=(<Spinner/>);
+        }
+
+        return (
+            <Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
+                <Grid.Column style={{ maxWidth: 450 }}>
+                {authRedirect}
+                <Header as='h2' color='black' textAlign='center'>
+                    Login to your Blog
+                </Header>
+                {login}
                 </Grid.Column>
             </Grid>
         );
@@ -103,10 +107,10 @@ class  Login extends Component{
 }
 
 const mapStateToProps = state => {
-    console.log(state);
     return {
         error: state.error,
-        isAuthenticated: state.token !== null
+        isAuthenticated: state.token !== null,
+        isloading:state.loading
     };
 };
 

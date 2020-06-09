@@ -12,7 +12,6 @@ class Layout extends Component {
         return (
             <>
                 <Navbar/>
-                {/*<SideDrawer/>*/}
                 <main className={classes.Content}>
                     {this.props.children}
                 </main>

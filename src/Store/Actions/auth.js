@@ -58,9 +58,9 @@ export const login=(email,password)=>{
             dispatch(loginSuccess(response.data.idToken,response.data.localId));
             dispatch(checkLoginTimeout(response.data.expiresIn));
         })
-        .catch(erre=>{
-            console.dir(erre);
-            dispatch(loginFail(erre.response.data.error));
+        .catch(err=>{
+            console.dir(err);
+            dispatch(loginFail(err.response.data.error));
         }
         );
     };

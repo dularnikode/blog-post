@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Menu} from 'semantic-ui-react';
-import {NavLink} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import { connect } from 'react-redux';
 
 class NavigationMenu extends Component {
@@ -10,25 +10,27 @@ class NavigationMenu extends Component {
 
   render() {
     const { activeItem } = this.state
-    console.log("isAuthenticated" ,this.props.isLoggedIn);
+    let auth='login';
+    if(this.props.isLoggedIn){
+      auth='logout';
+    }
     return (
       <Menu inverted>
-        <Menu.Item as={NavLink} to='/' header>Blog Post</Menu.Item>
+        <Menu.Item as={Link} to='/' header>Blog Post</Menu.Item>
         <Menu.Menu position='right'>
             <Menu.Item
             name='posts'
             active={activeItem === 'posts'}
             onClick={this.handleItemClick}
-            as={NavLink} to='/posts'
+            as={Link} to='/posts'
             >Posts</Menu.Item>
 
             <Menu.Item
-            name={this.props.isLoggedIn ? 'logout' : 'login'}
-            active={activeItem === this.props.isLoggedIn ? 'logout' : 'login'}
+            name={auth}
+            active={activeItem === auth}
             onClick={this.handleItemClick}
-            as={NavLink} to={this.props.isLoggedIn ? 'logout' : 'login'}
+            as={Link} to={auth}
             >{this.props.isLoggedIn ? 'Logout' : 'Login'}</Menu.Item>
-
         </Menu.Menu> 
       </Menu>
     );
